@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Account Settings</title>
+    <title>Account Profile</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/flag-icon-css/css/flag-icon.min.css">
@@ -23,11 +23,11 @@
   </head>
   <body>
     <div class="container-scroller">
-      <!-- partial:partials/_navbar.html -->
+      <!-- partial:partials/_navbar.php -->
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo" href="#"><img src="assets/images/logo.svg" alt="logo" /></a>
-          <a class="navbar-brand brand-logo-mini" href="#"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="#"><img src="assets/images/logo.jpg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="#"><img src="assets/images/logo.jpg" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -39,32 +39,32 @@
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                 <div class="nav-profile-img">
-                  <img src="assets/images/faces/face28.png" alt="image">
+                  <img src="<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="image">
                 </div>
                 <div class="nav-profile-text">
-                  <p class="mb-1 text-black">Henry Klein</p>
+                  <p class="mb-1 text-black"><?php echo htmlspecialchars($user['full_name']); ?></p>
                 </div>
               </a>
               <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="profileDropdown" data-x-placement="bottom-end">
                 <div class="p-3 text-center bg-primary">
-                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="assets/images/faces/face28.png" alt="">
+                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="">
                 </div>
                 <div class="p-2">
                   <h5 class="dropdown-header text-uppercase pl-2 text-dark">User Options</h5>
                  
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="profile.html">
+                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="profile.php">
                     <span>Profile</span>
                     <span class="p-0">
                       <i class="mdi mdi-account-outline ml-1"></i>
                     </span>
                   </a>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="settings.html">
+                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="settings.php">
                     <span>Settings</span>
                     <i class="mdi mdi-settings"></i>
                   </a>
                   <div role="separator" class="dropdown-divider"></div>
                   <h5 class="dropdown-header text-uppercase  pl-2 text-dark mt-2">Action</h5>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
+                 <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="logout.php">
                     <span>Log Out</span>
                     <i class="mdi mdi-logout ml-1"></i>
                   </a>
@@ -80,31 +80,31 @@
       </nav>
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_sidebar.html -->
+        <!-- partial:partials/_sidebar.php -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item">
-              <a class="nav-link" href="dashboard.html">
+              <a class="nav-link" href="dashboard.php">
                 <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
  <li class="nav-item">
-              <a class="nav-link"  href="all_products.html" >
+              <a class="nav-link"  href="all_products.php" >
                 <span class="icon-bg"><i class="mdi mdi-crosshairs-gps menu-icon"></i></span>
                 <span class="menu-title">All Products</span>
               </a>
             
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="sales.html">
+              <a class="nav-link" href="sales.php">
                 <span class="icon-bg"><i class="mdi mdi-chart-bar menu-icon"></i></span>
                 <span class="menu-title">Sales</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="debts.html">
+              <a class="nav-link" href="debts.php">
                 <span class="icon-bg"><i class="mdi mdi-format-list-bulleted menu-icon"></i></span>
                 <span class="menu-title">Debts</span>
               </a>
@@ -113,7 +113,7 @@
 
             <li class="nav-item sidebar-user-actions">
               <div class="sidebar-user-menu">
-                <a href="settings.html" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
+                <a href="settings.php" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
                   <span class="menu-title">Account Settings</span>
                 </a>
               </div>
@@ -121,7 +121,7 @@
           
             <li class="nav-item sidebar-user-actions">
               <div class="sidebar-user-menu">
-                <a href="#" class="nav-link"><i class="mdi mdi-logout menu-icon"></i>
+                <a href="logout.php" class="nav-link"><i class="mdi mdi-logout menu-icon"></i>
                   <span class="menu-title">Log Out</span></a>
               </div>
             </li>
@@ -140,7 +140,7 @@
               </div>
             </div>
             <div class="d-xl-flex justify-content-between align-items-start">
-              <h2 class="text-dark font-weight-bold mb-2">Account Settings</h2>
+              <h2 class="text-dark font-weight-bold mb-2">Account Profile</h2>
              
             </div>
             <div class="row">
@@ -148,7 +148,7 @@
             </div>
           </div>
           <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
+          <!-- partial:partials/_footer.php -->
           <footer class="footer">
             <div class="footer-inner-wraper">
               <div class="d-sm-flex justify-content-center justify-content-sm-between">

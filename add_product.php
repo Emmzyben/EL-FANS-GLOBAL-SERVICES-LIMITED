@@ -1,10 +1,91 @@
+<?php
+session_start(); // Ensure session is started
+if (!isset($_SESSION['user_id'])) {
+  // User is not logged in, redirect to login page
+  header("Location: admin.php");
+  exit;
+}
+
+require_once './database/db_config.php'; // Include your database configuration
+$userId = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+if (!$user) {
+    $message = "User not found.";
+    $messageType = "error";
+}
+$stmt->close();
+$message = "";
+$messageType = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Get and sanitize form inputs
+    $item_name = htmlspecialchars(trim($_POST['item_name']));
+    $item_price = filter_var(trim($_POST['item_price']), FILTER_VALIDATE_FLOAT);
+    $quantity = filter_var(trim($_POST['quantity']), FILTER_VALIDATE_INT);
+    $description = htmlspecialchars(trim($_POST['description']));
+
+    // Check if inputs are valid
+    if ($item_name && $item_price !== false && $quantity !== false && $description !== false) {
+        
+        $query = "INSERT INTO products (item_name, item_price, quantity, description) 
+                  VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+
+        if ($stmt) {
+            $stmt->bind_param(
+                "sdis",
+                $item_name,
+                $item_price,
+                $quantity,
+                $description
+            );
+
+            if ($stmt->execute()) {
+                $message = "Product record added successfully!";
+                $messageType = "success";
+            } else {
+                $message = "Error: " . $stmt->error;
+                $messageType = "error";
+            }
+            $stmt->close();
+        } else {
+            $message = "Error preparing query: " . $conn->error;
+            $messageType = "error";
+        }
+    } else {
+        $message = "Invalid input data. Please check your entries.";
+        $messageType = "error";
+    }
+
+    $conn->close();
+    $_SESSION['message'] = $message;
+    $_SESSION['messageType'] = $messageType;
+    header("Location: add_product.php");
+    exit;
+}
+
+// Retrieve and unset messages from the session (if any)
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $messageType = $_SESSION['messageType'];
+    unset($_SESSION['message']);
+    unset($_SESSION['messageType']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>All Sales</title>
+    <title>Add Product</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/flag-icon-css/css/flag-icon.min.css">
@@ -20,14 +101,15 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.png" />
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="container-scroller">
-      <!-- partial:partials/_navbar.html -->
+      <!-- partial:partials/_navbar.php -->
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo" href="#"><img src="assets/images/logo.svg" alt="logo" /></a>
-          <a class="navbar-brand brand-logo-mini" href="#"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="#"><img src="assets/images/logo.jpg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="#"><img src="assets/images/logo.jpg" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -39,32 +121,32 @@
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                 <div class="nav-profile-img">
-                  <img src="assets/images/faces/face28.png" alt="image">
+                  <img src="<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="image">
                 </div>
                 <div class="nav-profile-text">
-                  <p class="mb-1 text-black">Henry Klein</p>
+                  <p class="mb-1 text-black"><?php echo htmlspecialchars($user['full_name']); ?></p>
                 </div>
               </a>
               <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="profileDropdown" data-x-placement="bottom-end">
                 <div class="p-3 text-center bg-primary">
-                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="assets/images/faces/face28.png" alt="">
+                  <img class="img-avatar img-avatar48 img-avatar-thumb" src="<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="">
                 </div>
                 <div class="p-2">
                   <h5 class="dropdown-header text-uppercase pl-2 text-dark">User Options</h5>
                  
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="profile.html">
+                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="profile.php">
                     <span>Profile</span>
                     <span class="p-0">
                       <i class="mdi mdi-account-outline ml-1"></i>
                     </span>
                   </a>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="settings.html">
+                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="settings.php">
                     <span>Settings</span>
                     <i class="mdi mdi-settings"></i>
                   </a>
                   <div role="separator" class="dropdown-divider"></div>
                   <h5 class="dropdown-header text-uppercase  pl-2 text-dark mt-2">Action</h5>
-                  <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#">
+                 <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="logout.php">
                     <span>Log Out</span>
                     <i class="mdi mdi-logout ml-1"></i>
                   </a>
@@ -80,31 +162,31 @@
       </nav>
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_sidebar.html -->
+        <!-- partial:partials/_sidebar.php -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item">
-              <a class="nav-link" href="dashboard.html">
+              <a class="nav-link" href="dashboard.php">
                 <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
  <li class="nav-item">
-              <a class="nav-link"  href="all_products.html" >
+              <a class="nav-link"  href="all_products.php" >
                 <span class="icon-bg"><i class="mdi mdi-crosshairs-gps menu-icon"></i></span>
                 <span class="menu-title">All Products</span>
               </a>
             
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="sales.html">
+              <a class="nav-link" href="sales.php">
                 <span class="icon-bg"><i class="mdi mdi-chart-bar menu-icon"></i></span>
                 <span class="menu-title">Sales</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="debts.html">
+              <a class="nav-link" href="debts.php">
                 <span class="icon-bg"><i class="mdi mdi-format-list-bulleted menu-icon"></i></span>
                 <span class="menu-title">Debts</span>
               </a>
@@ -113,7 +195,7 @@
 
             <li class="nav-item sidebar-user-actions">
               <div class="sidebar-user-menu">
-                <a href="settings.html" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
+                <a href="settings.php" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
                   <span class="menu-title">Account Settings</span>
                 </a>
               </div>
@@ -121,7 +203,7 @@
           
             <li class="nav-item sidebar-user-actions">
               <div class="sidebar-user-menu">
-                <a href="#" class="nav-link"><i class="mdi mdi-logout menu-icon"></i>
+                <a href="logout.php" class="nav-link"><i class="mdi mdi-logout menu-icon"></i>
                   <span class="menu-title">Log Out</span></a>
               </div>
             </li>
@@ -130,6 +212,14 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+          <?php
+                    if (!empty($message)) {
+                        echo '<div id="notificationBar" class="notification-bar notification-' . $messageType . '">';
+                        echo $message;
+                        echo '<span class="close-btn" onclick="closeNotification()">&times;</span>';
+                        echo '</div>';
+                    }
+                ?>
             <div class="row" id="proBanner">
               <div class="col-12">
                 <span >
@@ -139,16 +229,41 @@
                 </span>
               </div>
             </div>
-            <div class="d-xl-flex justify-content-between align-items-start">
-              <h2 class="text-dark font-weight-bold mb-2"> All Sales </h2>
-             
-            </div>
+           
             <div class="row">
-            
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Add new product</h4>
+                        <form class="forms-sample" method="POST" action="">
+    <div class="form-group">
+        <label for="item_name">Item Name</label>
+        <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Name" required>
+    </div>
+    <div class="form-group">
+        <label for="item_price">Item Price (₦)</label>
+        <input type="number" class="form-control" id="item_price" name="item_price" placeholder="Price" required>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Qty" required>
+    </div>
+ 
+    <div class="form-group">
+    <label for="exampleTextarea1">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Description" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mr-2" style="background-color:green;border:none">Submit</button>
+    <button type="reset" class="btn btn-light">Cancel</button>
+</form>
+                      </div>
+                    </div>
+                  </div>
+               
             </div>
           </div>
           <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
+          <!-- partial:partials/_footer.php -->
           <footer class="footer">
             <div class="footer-inner-wraper">
               <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -178,5 +293,6 @@
     <!-- Custom js for this page -->
     <script src="assets/js/dashboard.js"></script>
     <!-- End custom js for this page -->
+    <script src="script.js"></script>
   </body>
 </html>

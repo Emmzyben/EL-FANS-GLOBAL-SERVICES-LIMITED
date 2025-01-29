@@ -1,0 +1,302 @@
+header{
+    display: flex;flex-direction: row;justify-content: center;
+    position: sticky;top: 0;z-index: 10000;padding: 10px;background-color: #ffffff;
+}
+header>div{
+    width: 33%;text-align: center;margin: 10px;
+}
+header>div>ul>li{
+    list-style-type: none;padding: 0;
+}
+header>div>ul{
+    display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;
+}
+
+header>div>ul li>a{
+    text-decoration: none;color: #242424;font-weight: lighter;
+}
+header>div>ul li>a:hover{
+    color: #E8562E;transition: 0.5s;
+}
+body{
+    margin: 0;padding: 0;background-color: #FFFFFF;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+header button{
+    background-color: #E8562E;padding: 12px;border: none;border-radius: 5px;color: #fff;
+}
+
+div{
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+
+  div.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    background-color: #E8562E;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  #side{
+    background-color: #ffffff;
+    height: 0;
+    display: none;
+
+}
+#side img{
+    display: none;
+}
+.container {
+    display: none;
+  }
+  
+  .bar1, .bar2, .bar3 {
+    width: 20px;
+    height: 5px;
+    background-color: #012A6A;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  .change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+  }
+  
+  .change .bar2 {opacity: 0;}
+  
+  .change .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+  }
+.sidenav{
+    display: none;
+}
+#sideNav{
+    display: none;
+}
+
+#underNav{
+    display: none;
+}
+#bg{
+    height: 400px;
+    background-image:url(images/Rectangle\ 9.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position:relative;
+  }
+  #bg1{
+    height: 250px;
+    background-image:url(images/Rectangle\ 9.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position:relative;
+  }
+  .bgcover{
+    position:absolute;
+    top:0;
+    left:0;
+    bottom: 0;
+    right:0;
+    background-color: #0912428B;
+    color:#fff;
+    padding: 40px;
+    padding-top: 5%;text-align: center;
+  }
+  .bgcover>div>a{
+    color:#ffffff;
+    background-color: #E8562E;
+    padding: 4px;
+    border-radius: 3px;
+    z-index: 1;
+    border: none;
+    font-weight: 400;
+    padding: 10px;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  .bgcover>div>a:hover{
+    background-color:#012A6A ;
+    color: #ffffff;
+  }
+  #slidingDiv {
+    position: relative;
+        left: -100%;
+      transition: left 1s ease-in-out;
+    }
+    #talk{
+        display: flex;flex-direction: row;justify-content: space-evenly;;
+        background-color: #ffffff;margin-top: 30px;padding: 30px;
+    }
+    #talk>div{
+        width: 30%;height: 300px;line-height: 30px;
+    }
+    #talk img{
+        width: 100%;border-radius: 7px;
+    }
+    #talk2{
+        display: flex;flex-direction: row;justify-content: space-evenly;;
+        background-color: #1C1F35;margin-top: 30px;padding: 20px;
+    }
+    #talk2>div{
+        width: 30%;height: auto;line-height: 30px;color:white;font-size: small;
+    }
+    #talk2 img{
+        width: 100%;border-radius: 7px;
+    }
+    #talk2 i{
+        color: #ffffff;padding: 10px;background-color: #E8562E;border-radius: 50px;margin: 5px;
+    }
+    button{
+        background-color: #E8562E;padding: 10px;border: 1px solid black;border-radius: 5px;color: #fff;
+        border: none;
+    }
+    #divider img{width: 100%;}
+    #middleImg{margin-top: 30px;width: 100%;height: 400px;}
+.moveUp{
+    margin-top: -10% !important;margin-left: 10%;margin-right: 10%;
+}
+#talk3{
+    display: flex;flex-direction: row;justify-content: center;;
+    background-color: #ffffff;margin-top: 30px;padding: 30px;
+}
+#talk3>div{
+    width: 30%;height: 300px;line-height: 30px;font-size: small;
+}
+#talk3 img{
+    width: 100%;border-radius: 7px;
+}
+#talk form input{
+border: 1px solid grey;background-color: #091242;color: #ffffff;padding: 5px;margin-bottom: 5px;
+}
+#talk form textarea{
+    border: 1px solid grey;background-color: #091242;color: #ffffff;padding: 5px;width: 95%;margin-bottom: 5px;
+}
+#talk form{
+    margin-top: 40px;
+}
+#coverFooter{
+    background-image: url(images/Image\ \(2\).png);
+    background-position: center;background-size: cover;background-repeat: no-repeat;
+}
+footer{
+    display: flex;flex-direction: row;justify-content: space-between;
+    background-color:#171717;padding: 30px;
+ }
+ footer>div{
+ padding: 10px;color: #F9FAFB;margin: 20px
+ }
+ footer h3{
+     font-weight: lighter;font-size: small;
+ }
+    @media only screen and (max-width: 900px){
+        footer{
+            flex-direction: column;padding: 10px;
+        }
+        footer>div{
+            width: auto;margin: 0;
+        }
+        #talk form input{
+            width: 95%;
+            }
+            #talk form textarea{
+               width: 95%;margin-bottom: 5px;
+            }
+            #talk form{
+                margin-top: 0px;
+            }
+        .moveUp{
+            margin: 0;
+        }
+        #middleImg{display: none;}
+        #talk{
+            flex-direction: column;justify-content: center;padding: 0;
+        }
+        #talk >div{
+            width: 90%;padding: 20px;height: auto;
+        }
+        #talk2{
+            flex-direction: column-reverse;justify-content: center;padding: 0;
+        }
+        #talk2 >div{
+            width: 90%;padding: 20px;
+        }
+        #talk3{
+          justify-content: center;padding: 0;margin: 20px;
+        }
+        #talk3 >div{
+            width: 90%;padding: 20px;height: auto;
+        }
+    #bg{
+        height:470px;
+      }
+    .sidenav{
+        display: block;
+    }
+    #sideNav{
+        display: block;
+    }
+    #underNav{
+        display: block;margin-top: 25px;margin-left: 20px;
+    }
+    .container{
+        display: inline-block;
+        cursor: pointer;
+       }
+    #side{
+        display: block;height: 70px;
+    }
+    #side img{
+        display: block;
+    }
+    header{
+        display: none;
+    }
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+      
+      .sidenav a {
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+        line-height: 50px;
+        color: #012A6A;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+    border-bottom: 1px solid #d0def5;
+    padding-left: 15px;
+      }
+      
+      .sidenav a:hover {
+        color: #ffffff;background-color: #012A6A;
+      }
+
+.container{
+    float: right;margin-right: 30px;margin-top: -40px;
+}
+    }
